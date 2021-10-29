@@ -41,7 +41,7 @@ class DefaultShoppingRepository @Inject constructor(
                 Resource.error("Unknown error", null)
             }
         } catch(e: Exception) {
-            Resource.error("Couldn't reach the server")
+            Resource.error("Couldn't reach the server", null)
         }
     }
 }
