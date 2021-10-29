@@ -2,10 +2,13 @@ package com.example.plshoppinglisttesting.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.plshoppinglisttesting.data.local.ShoppingDao
 import com.example.plshoppinglisttesting.data.local.ShoppingItemDatabase
 import com.example.plshoppinglisttesting.data.remote.PixabayAPI
 import com.example.plshoppinglisttesting.other.Constants.BASE_URL
 import com.example.plshoppinglisttesting.other.Constants.DATABASE_NAME
+import com.example.plshoppinglisttesting.repositories.DefaultShoppingRepository
+import com.example.plshoppinglisttesting.repositories.ShoppingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +22,18 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object AppModule {
 
-
-
     @Singleton
     @Provides
     fun provideShoppingItemDatabase(
         @ApplicationContext context: Context
     ) = Room.databaseBuilder(context, ShoppingItemDatabase::class.java, DATABASE_NAME).build()
+
+    @Singleton
+    @Provides
+    fun provideDefaultShoppingRepository(
+        dao: ShoppingDao,
+        api: PixabayAPI
+    ) = DefaultShoppingRepository(dao, api) as ShoppingRepository
 
     @Singleton
     @Provides
