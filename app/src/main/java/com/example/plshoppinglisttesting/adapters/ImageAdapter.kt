@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ImageAdapter @Inject constructor(
     private val glide: RequestManager
 ) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+    class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     private val diffCallback = object : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
@@ -51,12 +52,16 @@ class ImageAdapter @Inject constructor(
         val url = images[position]
         holder.itemView.apply {
             glide.load(url).into(ivShoppingImage)
+
+            setOnClickListener {
+                onItemClickListener?.let { click ->
+                    click(url)
+                }
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return images.size
     }
-
-    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
